@@ -1,7 +1,6 @@
 var startButton = document.querySelector("#start");
 var timerElement = document.querySelector("#time-reamaining");
 var numberPoints = document.querySelector("#points-number");
-var scoreboardDiv = document.querySelector("#scoreboard");
 var main = document.body.children[1];
 var questionHeading = document.createElement("h2");
 var answerP1 = document.createElement("p");
@@ -37,7 +36,7 @@ startButton.addEventListener("click", startGame);
 
 function startGame (){
     correctAnswer = true;
-    timeLeft = 3;
+    timeLeft = 8;
     startTimer();
     startButton.remove();
     generateQuestion();
@@ -52,9 +51,12 @@ function startTimer () {
         timeLeft--;
         
         if(timeLeft > 0) {
-            //check that questions still remain
-                //if yes then load new question
-                //if no go to sumbit score page and take the value in point with it
+            if(correctAnswer){
+                //check that questions still remain
+                    //if yes then load new question
+                    //if no go launch createSubmit()
+            }
+
         }
             if (!correctAnswer) {
                 if(timeLeft < 5) {
@@ -66,17 +68,8 @@ function startTimer () {
                 }
             }
         if(timeLeft === 0) {
-            questionHeading.remove();
-            answerP1.remove();
-            answerP2.remove();
-            answerP3.remove();
-            submitButton.textContent = "Submit";
-            main.appendChild(submitButton);
-            main.appendChild(nameInput);
-            nameInput.setAttribute("id", "name");
-            //and if there are still questions left
-                //setLoss
-                    //go to sumbit score page
+            timerElement.textContent = timeLeft;
+            createSubmit();
             clearInterval(timer);
         }
 
@@ -96,16 +89,12 @@ main.addEventListener("click", function (event) {
         questionP.textContent = "Wrong Answer";
         correctAnswer = false;
     }
-    // return point
 });
 
-//how to get this to return it's value?
 function addPoint() {
     point ++;
     numberPoints.textContent = point;
-    // var points = {points: point};
-    // console.log(points);
-    // return points;
+    return point;
 }
 
 submitButton.addEventListener("click", function(event) {
@@ -117,10 +106,8 @@ submitButton.addEventListener("click", function(event) {
     if (name === "") {
         displayMessage("error", "Name cannot be blank");
     } else {
-        var myName = {name: name};
-        console.log(myName);
         //this is not seeing the value returned by addPoint
-        // setScore(myName, points);
+        setScore(name, point);
         
     }
 
@@ -132,9 +119,12 @@ function displayMessage(type, message) {
     scoreboardDiv.setAttribute("class", type);
 }
 
-function setScore(name, points) {
-    var score = Object.assign(name, points);
-    localStorage.setItem("score", JSON.stringify(score));
+function setScore(name, point) {
+    var newScore = {
+        name: name,
+        score: point
+    }
+    localStorage.setItem("newScore", JSON.stringify(newScore));
 }
 
 function generateQuestion() {
@@ -158,4 +148,16 @@ function generateQuestion() {
     answerP2.setAttribute("class", "answer");
     answerP3.setAttribute("class", "answer");
 
+}
+
+function createSubmit () {
+    questionHeading.remove();
+    answerP1.remove();
+    answerP2.remove();
+    answerP3.remove();
+    questionP.remove();
+    submitButton.textContent = "Submit";
+    main.appendChild(submitButton);
+    main.appendChild(nameInput);
+    nameInput.setAttribute("id", "name");
 }
