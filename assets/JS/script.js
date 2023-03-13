@@ -14,20 +14,25 @@ var timeLeft;
 var timer;
 var correctAnswer;
 var point=0;
+var i =1;
+var answer;
 
-var question1 = {
+var questions = [
+    {
     question: "Here is a question",
     answer1: "answer 1",
     answer2: "answer 2",
-    answer3: "answer 3"
-}
-
-var question2 = {
+    answer3: "answer 3",
+    correctAnswer: "1"
+    },
+    {
     question: "Here is another question",
-    answer1: "answer 1",
-    answer2: "answer 2",
-    answer3: "answer 3"
-}
+    answer1: "answer2 1",
+    answer2: "answer2 2",
+    answer3: "answer2 3",
+    correctAnswer: "3"
+    }
+]
 
 
 startButton.addEventListener("click", startGame);
@@ -36,10 +41,11 @@ startButton.addEventListener("click", startGame);
 
 function startGame (){
     correctAnswer = true;
-    timeLeft = 8;
+    timeLeft = 30;
     startTimer();
     startButton.remove();
-    generateQuestion();
+    console.log(correctAnswer);
+    generateQuestion(i);
 }
 
 function startTimer () {
@@ -50,14 +56,12 @@ function startTimer () {
         timerElement.textContent = timeLeft;
         timeLeft--;
         
-        if(timeLeft > 0) {
-            if(correctAnswer){
-                //check that questions still remain
-                    //if yes then load new question
-                    //if no go launch createSubmit()
-            }
-
-        }
+        // if(timeLeft > 0) {
+        //     if (i >= questions.length-1) {
+        //         //tell the user they won
+        //         createSubmit();
+        //     }
+        // }
             if (!correctAnswer) {
                 if(timeLeft < 5) {
                     timeLeft = 0;
@@ -68,6 +72,7 @@ function startTimer () {
                 }
             }
         if(timeLeft === 0) {
+            //tell user they lost and ran out of time
             timerElement.textContent = timeLeft;
             createSubmit();
             clearInterval(timer);
@@ -77,19 +82,26 @@ function startTimer () {
 
 }
 
+//something may not be working properly here too with the event listener
 main.addEventListener("click", function (event) {
     var element = event.target;
-    var answer = element.getAttribute("data-number");
+    answer = element.getAttribute("data-number");
 
-    if(answer === "1") {
+    checkAnswer(i, answer);
+    return answer;
+});
+
+
+function checkAnswer (i, answer) {
+    if (answer === questions[i].correctAnswer) {
         questionP.textContent = "Right Answer";
         correctAnswer = true;
         addPoint();
-    } else if (answer === "2" || answer === "3" || answer === "4") {
+    } else {    //this has introduced a bug where if not right then always wrong instead of only checking if answer != correct answer
         questionP.textContent = "Wrong Answer";
         correctAnswer = false;
     }
-});
+}
 
 function addPoint() {
     point ++;
@@ -127,26 +139,39 @@ function setScore(name, point) {
     localStorage.setItem("newScore", JSON.stringify(newScore));
 }
 
-function generateQuestion() {
-    questionHeading.textContent = question1.question;
-    answerP1.textContent = question1.answer1;
-    answerP2.textContent = question1.answer2;
-    answerP3.textContent = question1.answer3;
+function generateQuestion(i) {
+        console.log(i);
+        console.log(questions[i].question);
+        questionHeading.textContent = questions[i].question;
+        answerP1.textContent = questions[i].answer1;
+        answerP2.textContent = questions[i].answer2;
+        answerP3.textContent = questions[i].answer3;
 
-    main.appendChild(questionHeading);
-    main.appendChild(answerP1);
-    main.appendChild(answerP2);
-    main.appendChild(answerP3);
-    main.appendChild(questionP);
+        main.appendChild(questionHeading);
+        main.appendChild(answerP1);
+        main.appendChild(answerP2);
+        main.appendChild(answerP3);
+        main.appendChild(questionP);
 
-    questionHeading.setAttribute("data-type", "question")
-    answerP1.setAttribute("data-number", "1");
-    answerP2.setAttribute("data-number", "2");
-    answerP3.setAttribute("data-number", "3");
-    questionHeading.setAttribute("class", "question");
-    answerP1.setAttribute("class", "answer");
-    answerP2.setAttribute("class", "answer");
-    answerP3.setAttribute("class", "answer");
+        questionHeading.setAttribute("data-type", "question")
+        answerP1.setAttribute("data-number", "1");
+        answerP2.setAttribute("data-number", "2");
+        answerP3.setAttribute("data-number", "3");
+        questionHeading.setAttribute("class", "question");
+        answerP1.setAttribute("class", "answer");
+        answerP2.setAttribute("class", "answer");
+        answerP3.setAttribute("class", "answer");
+
+        //this is not using checkAnswer to return a value
+        // checkAnswer(answer);
+        // console.log(correctAnswer);
+        // while( i <= questions.length - 1) {
+            // if (correctAnswer) {
+            //     i ++;
+            //need to add something aboout stopping propagation?
+            //     generateQuestion(i);
+            // }
+        // }
 
 }
 
