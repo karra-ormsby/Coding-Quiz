@@ -1,11 +1,7 @@
 var startButton = document.querySelector("#start");
 var timerElement = document.querySelector("#time-reamaining");
 var numberPoints = document.querySelector("#points-number");
-var main = document.body.children[1];
-var questionHeading = document.createElement("h2");
-var answerP1 = document.createElement("p");
-var answerP2 = document.createElement("p");
-var answerP3 = document.createElement("p");
+var main = document.querySelector("#quizz-area");
 var questionP = document.createElement("p");
 var submitButton = document.createElement("button");
 var nameInput = document.createElement("input");
@@ -14,8 +10,7 @@ var timeLeft;
 var timer;
 var correctAnswer;
 var point=0;
-var i =1;
-var answer;
+var i =0;
 
 var questions = [
     {
@@ -44,7 +39,6 @@ function startGame (){
     timeLeft = 30;
     startTimer();
     startButton.remove();
-    console.log(correctAnswer);
     generateQuestion(i);
 }
 
@@ -56,21 +50,7 @@ function startTimer () {
         timerElement.textContent = timeLeft;
         timeLeft--;
         
-        // if(timeLeft > 0) {
-        //     if (i >= questions.length-1) {
-        //         //tell the user they won
-        //         createSubmit();
-        //     }
-        // }
-            if (!correctAnswer) {
-                if(timeLeft < 5) {
-                    timeLeft = 0;
-                } else {
-                    correctAnswer = true;
-                    //subtracting 6 seconds for some reason
-                    timeLeft = timeLeft - 5;
-                }
-            }
+
         if(timeLeft === 0) {
             //tell user they lost and ran out of time
             timerElement.textContent = timeLeft;
@@ -82,25 +62,36 @@ function startTimer () {
 
 }
 
-//something may not be working properly here too with the event listener
+
 main.addEventListener("click", function (event) {
     var element = event.target;
+    if( element.nodeName !== "P") {
+        return;
+    }
+    var answer;
     answer = element.getAttribute("data-number");
-
-    checkAnswer(i, answer);
-    return answer;
+    checkAnswer(answer);
 });
 
 
-function checkAnswer (i, answer) {
-    if (answer === questions[i].correctAnswer) {
+function checkAnswer (answer) {
+    if (answer === questions[i].correctAnswer) {;
         questionP.textContent = "Right Answer";
         correctAnswer = true;
         addPoint();
-    } else {    //this has introduced a bug where if not right then always wrong instead of only checking if answer != correct answer
+    } else {
+            if (timeLeft-5 < 0) {
+                timeLeft = 0;
+                createSubmit();
+            } else {
+                timeLeft = timeLeft - 4;
+            }   
         questionP.textContent = "Wrong Answer";
         correctAnswer = false;
     }
+    i ++;
+    console.log("i in checkAnswer: " + i);
+    generateQuestion(i);
 }
 
 function addPoint() {
@@ -118,8 +109,8 @@ submitButton.addEventListener("click", function(event) {
     if (name === "") {
         displayMessage("error", "Name cannot be blank");
     } else {
-        //this is not seeing the value returned by addPoint
         setScore(name, point);
+        name = " ";
         
     }
 
@@ -138,10 +129,20 @@ function setScore(name, point) {
     }
     localStorage.setItem("newScore", JSON.stringify(newScore));
 }
-
 function generateQuestion(i) {
-        console.log(i);
-        console.log(questions[i].question);
+    console.log("in in generateQuestion: " + i);
+    if (i > questions.length - 1) {
+        //tell the user they won
+        clearInterval(timer);
+        createSubmit();
+    } else {
+        //removing the children of main
+        main.innerHTML = "";
+        var questionHeading = document.createElement("h2");
+        var answerP1 = document.createElement("p");
+        var answerP2 = document.createElement("p");
+        var answerP3 = document.createElement("p");
+
         questionHeading.textContent = questions[i].question;
         answerP1.textContent = questions[i].answer1;
         answerP2.textContent = questions[i].answer2;
@@ -161,26 +162,14 @@ function generateQuestion(i) {
         answerP1.setAttribute("class", "answer");
         answerP2.setAttribute("class", "answer");
         answerP3.setAttribute("class", "answer");
+    }
 
-        //this is not using checkAnswer to return a value
-        // checkAnswer(answer);
-        // console.log(correctAnswer);
-        // while( i <= questions.length - 1) {
-            // if (correctAnswer) {
-            //     i ++;
-            //need to add something aboout stopping propagation?
-            //     generateQuestion(i);
-            // }
-        // }
+
 
 }
 
 function createSubmit () {
-    questionHeading.remove();
-    answerP1.remove();
-    answerP2.remove();
-    answerP3.remove();
-    questionP.remove();
+    main.innerHTML = "";
     submitButton.textContent = "Submit";
     main.appendChild(submitButton);
     main.appendChild(nameInput);
