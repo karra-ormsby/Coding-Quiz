@@ -1,16 +1,20 @@
 var startButton = document.querySelector("#start");
 var timerElement = document.querySelector("#time-reamaining");
-var numberPoints = document.querySelector("#points-number");
-var main = document.querySelector("#quizz-area");
+var main = document.querySelector("#quiz-area");
 var questionP = document.createElement("p");
 var submitButton = document.createElement("button");
 var nameInput = document.createElement("input");
+var submitP = document.createElement("p");
+var numberPoints = document.createElement("p");
+
+var highScores = JSON.parse(localStorage.getItem("newScore"));
 
 var timeLeft;
 var timer;
 var correctAnswer;
 var point=0;
 var i =0;
+
 
 var questions = [
     {
@@ -65,7 +69,7 @@ function startTimer () {
 
 main.addEventListener("click", function (event) {
     var element = event.target;
-    if( element.nodeName !== "P") {
+    if( element.nodeName !== "LI") {
         return;
     }
     var answer;
@@ -84,36 +88,41 @@ function checkAnswer (answer) {
                 timeLeft = 0;
                 createSubmit();
             } else {
-                timeLeft = timeLeft - 4;
+                timeLeft = timeLeft - 9;
             }   
         questionP.textContent = "Wrong Answer";
         correctAnswer = false;
     }
     i ++;
-    console.log("i in checkAnswer: " + i);
     generateQuestion(i);
 }
 
 function addPoint() {
     point ++;
-    numberPoints.textContent = point;
     return point;
 }
 
 submitButton.addEventListener("click", function(event) {
+    event.preventDefault();
 
     var name = document.querySelector("#name").value
-
-    console.log(name);
 
     if (name === "") {
         displayMessage("error", "Name cannot be blank");
     } else {
-        setScore(name, point);
-        name = " ";
-        
+        var newScore = {
+            name: name,
+            point: point
+        }
+
+        localStorage.setItem("newScore", JSON.stringify(newScore));
+        highScores.push(newScore);
+
+        console.log(highScores);
     }
 
+    // window.location.href = "./highscore.html";
+    
 });
 
 
@@ -122,15 +131,8 @@ function displayMessage(type, message) {
     scoreboardDiv.setAttribute("class", type);
 }
 
-function setScore(name, point) {
-    var newScore = {
-        name: name,
-        score: point
-    }
-    localStorage.setItem("newScore", JSON.stringify(newScore));
-}
+
 function generateQuestion(i) {
-    console.log("in in generateQuestion: " + i);
     if (i > questions.length - 1) {
         //tell the user they won
         clearInterval(timer);
@@ -138,10 +140,10 @@ function generateQuestion(i) {
     } else {
         //removing the children of main
         main.innerHTML = "";
-        var questionHeading = document.createElement("h2");
-        var answerP1 = document.createElement("p");
-        var answerP2 = document.createElement("p");
-        var answerP3 = document.createElement("p");
+        var questionHeading = document.createElement("ul");
+        var answerP1 = document.createElement("li");
+        var answerP2 = document.createElement("li");
+        var answerP3 = document.createElement("li");
 
         questionHeading.textContent = questions[i].question;
         answerP1.textContent = questions[i].answer1;
@@ -153,6 +155,7 @@ function generateQuestion(i) {
         main.appendChild(answerP2);
         main.appendChild(answerP3);
         main.appendChild(questionP);
+
 
         questionHeading.setAttribute("data-type", "question")
         answerP1.setAttribute("data-number", "1");
@@ -171,7 +174,12 @@ function generateQuestion(i) {
 function createSubmit () {
     main.innerHTML = "";
     submitButton.textContent = "Submit";
-    main.appendChild(submitButton);
+    submitP.textContent = "Please enter you initals";
+    numberPoints.textContent = "Congratulations, you earned " + point + " points!";
+    main.appendChild(numberPoints);
+    main.appendChild(submitP);
     main.appendChild(nameInput);
+    main.appendChild(submitButton);
     nameInput.setAttribute("id", "name");
+    submitButton.setAttribute("id", "submit");
 }
