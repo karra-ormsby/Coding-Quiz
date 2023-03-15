@@ -115,13 +115,12 @@ submitButton.addEventListener("click", function(event) {
             point: point
         }
 
-        localStorage.setItem("newScore", JSON.stringify(newScore));
-        highScores.push(newScore);
-
+        highScores.push(newScore);  
         console.log(highScores);
+        localStorage.setItem("highScores", JSON.stringify(highScores));  
+        // window.location.href = "./highscore.html";
     }
 
-    // window.location.href = "./highscore.html";
     
 });
 
