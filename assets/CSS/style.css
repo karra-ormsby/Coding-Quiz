@@ -1,69 +1,58 @@
 :root {
-    --backgroung-color: rgba(211, 211, 211, 0.591);
-    --header-color: grey;
-    --quiz-color: lightgreen;
+    --main-text-color: #48CB85;
 }
 
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+}
 
 header {
-    background-color: var(--header-color);
     display: flex;
     justify-content: space-between;
-    font-size: 20px;
-    padding: 0 15px;
+    background-color: #ECECEC;
+    padding-bottom: 0.8rem;
 }
 
 main {
-    background-color: var(--backgroung-color);
-    margin: 0 200px;
-    font-size: 18px;
-    line-height: 1.5;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 80rem;  /*maybe change this to another number*/
+    margin: 0 auto;
 }
 
-#quiz-area {
-    background-color: var(--quiz-color);
-    border-radius: 5px;
-    padding: 30px 0;
+/* any child of main to make sure things are always centered horizontally
+main > * {
+    width: 100%;
+} */
+
+#highscore {
+    margin: 0.5rem 0.5rem 0 0;
+    text-decoration: none;
 }
 
-#start {
-    font-size: 22px;
-    padding: 8px 60px;
-    border-radius: 5px;
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
+#time {
+    font-size: 1.5rem;
+    color: var(--main-text-color);
+    margin: 1.1rem 0 0 0.5rem;
+}
+
+.btn {
+    font-size: 1.5rem;
+    padding: 0.6rem;
+    color: var(--main-text-color);
+    border: 0.1rem solid var(--main-text-color);
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 1px 2px 2px var(--main-text-color);
+
 }
 
 .answer {
-    margin-bottom: 25px;
-    padding: 10px;
-    background-color: blue;
-    border-radius: 5px;
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
     list-style: none;
+    padding-top: 0.8rem;
 }
-
-.question {
-    text-align: center;
-}
-
-#submit {
-    font-size: 18px;
-    padding: 8px 20px;
-    border-radius: 5px;
-    position: relative;
-    left: 35%;
-}
-
-#name {
-    font-size: 28px;
-    border-radius: 5px;
-    position: relative;
-    left: 35%;
-    top: 3px;
-    margin-right: 5px;
-}
-
