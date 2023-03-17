@@ -1,0 +1,52 @@
+:root {
+    --main-text-color: #37AE0E;
+    --backgroun-color: #E6F5E1;
+}
+
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    max-width: 80rem;
+    margin: 0 auto;
+}
+
+#highscore {
+    font-size: 3rem;
+     color: var(--main-text-color);
+     margin-top: 1rem;
+     margin-bottom: 2rem;
+    margin-left: 0.5rem
+}
+
+#highscore-list {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    margin-left: 0.5rem
+}
+
+.btn {
+    font-size: 1.5rem;
+    padding: 0.6rem;
+    margin-top:1.5rem;
+    color: var(--main-text-color);
+    border: 0.1rem solid var(--main-text-color);
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 1px 2px 2px var(--main-text-color);
+
+}
+
+#back {
+    text-decoration: none;
+    margin-right: 0.5rem;
+    margin-top: 1.5rem;
+}

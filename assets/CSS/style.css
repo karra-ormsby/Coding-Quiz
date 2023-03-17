@@ -1,5 +1,6 @@
 :root {
-    --main-text-color: #48CB85;
+    --main-text-color: #37AE0E;
+    --backgroun-color: #E6F5E1;
 }
 
 * {
@@ -11,8 +12,8 @@
 header {
     display: flex;
     justify-content: space-between;
-    background-color: #ECECEC;
-    padding-bottom: 0.8rem;
+    background-color: var(--backgroun-color);
+    padding-bottom: 0.9rem;
 }
 
 main {
@@ -21,14 +22,9 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    max-width: 80rem;  /*maybe change this to another number*/
+    max-width: 80rem;
     margin: 0 auto;
 }
-
-/* any child of main to make sure things are always centered horizontally
-main > * {
-    width: 100%;
-} */
 
 #highscore {
     margin: 0.5rem 0.5rem 0 0;
@@ -39,6 +35,10 @@ main > * {
     font-size: 1.5rem;
     color: var(--main-text-color);
     margin: 1.1rem 0 0 0.5rem;
+}
+
+#start {
+    font-size: 3rem;;
 }
 
 .btn {
@@ -53,6 +53,52 @@ main > * {
 }
 
 .answer {
+    font-size: 1.5rem;
     list-style: none;
-    padding-top: 0.8rem;
+    margin-bottom: 1.2rem;
+    border: 0.1rem solid white;
+    border-radius: 1rem;
+    padding: 0.6rem;
+    box-shadow: 1px 2px 2px 2px var(--main-text-color);
+    background-color: white;;
+}
+
+.answer:hover {
+    background-color: var(--backgroun-color);
+}
+
+.question {
+    font-size: 2rem;
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+
+#question-p {
+    font-size: 2rem;
+    color: #69C24A;
+}
+
+#submit-points {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+#submit-paragraph {
+    font-size: 1.5rem;
+}
+
+#name {
+    font-size: 2rem;
+    padding: 0.8rem;
+    margin-top: 1rem;
+    margin-bottom: 1.1rem;
+    border: 0.1rem solid var(--main-text-color);
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+::placeholder {
+    color: #69C24A;
+    font-size: 1.3rem;
 }

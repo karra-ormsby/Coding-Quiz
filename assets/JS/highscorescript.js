@@ -6,10 +6,8 @@ var highScores = JSON.parse(localStorage.getItem("highScores"));
 console.log(highScores);
 
 for (i = 0; i < highScores.length; i ++) {
-    console.log("name: " + highScores[i].name);
-    console.log("score: " + highScores[i].point);
     var score = document.createElement("p");
-    score.textContent = "name: " + highScores[i].name + "     " + "points: " + highScores[i].point;
+    score.textContent = "Name: " + highScores[i].name + '\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + "Score: " + highScores[i].point;
     highscoreList.appendChild(score);
 }
 
