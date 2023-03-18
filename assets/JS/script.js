@@ -65,8 +65,6 @@ var questions = [
 
 startButton.addEventListener("click", startGame);
 
-
-
 function startGame (){
     correctAnswer = true;
     timeLeft = 120;
@@ -75,7 +73,7 @@ function startGame (){
     generateQuestion(i);
 }
 
-//starts a timer that acounts down each second until the timeLeft runs out
+//starts a timer that acounts down each second until the timeLeft runs out. Upon time running out it runs the function createSubmit
 function startTimer () {
 
     timer = setInterval(function () {
@@ -147,7 +145,7 @@ quizArea.addEventListener("click", function (event) {
     checkAnswer(answer);
 });
 
-//checks whether the answer chosen by the user matches the correct answer. If it's correct it generates a new question, if it's incorrect it takes time off the timeLeft
+//checks whether the answer chosen by the user matches the correct answer. If it's correct it adds a point, if it's incorrect it takes time off the timeLeft. Afterwards it generates a new question
 function checkAnswer (answer) {
     if (answer === questions[i].correctAnswer) {;
         questionP.textContent = "Right Answer";
@@ -173,7 +171,7 @@ function addPoint() {
     return point;
 }
 
-//Once the user clicks the submit button it save the points and the respective name to an obect and saves it to local storage
+//Once the user clicks the submit button it save the points and the respective name to an object and saves it to local storage
 submitButton.addEventListener("click", function(event) {
     event.preventDefault();
 
@@ -189,7 +187,6 @@ submitButton.addEventListener("click", function(event) {
         }
 
         highScores.push(newScore);  
-        console.log(highScores);
         localStorage.setItem("highScores", JSON.stringify(highScores));  
         window.location.href = "./highscore.html";
     }
